@@ -1,0 +1,31 @@
+---
+const navItems = [
+  { name: "Dashboard", icon: "", href: "/" },
+  { name: "Eventos", icon: "", href: "/eventos" },
+  { name: "Instructores", icon: "", href: "/instructores" },
+  { name: "Evidencias", icon: "", href: "/evidencias" },
+];
+---
+
+<aside class="w-64 bg-secondary text-white">
+  <div class="p-4 border-b border-complement">
+    <h1 class="text-xl font-bold">Gestión Eventos</h1>
+  </div>
+  
+  <nav class="p-4">
+    <ul class="space-y-2">
+      {navItems.map(item => (
+        <li>
+          <a 
+            href={item.href} 
+            class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-complement transition-colors"
+            class:list={[new URL(Astro.request.url).pathname === item.href && 'bg-complement']}
+          >
+            <span class="text-lg">{item.icon}</span>
+            <span>{item.name}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</aside>

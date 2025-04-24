@@ -1,0 +1,57 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import EventCard from '../components/EventCard.astro';
+
+const events = [
+  { 
+    id: 1, 
+    title: "Taller de Emprendimiento", 
+    date: "2023-11-15", 
+    time: "09:00",
+    location: "Sede Principal", 
+    modality: "Presencial", 
+    instructor: "Julie Sáenz" 
+  },
+  { 
+    id: 2, 
+    title: "Marketing Digital", 
+    date: "2023-11-20", 
+    time: "14:30",
+    location: "Virtual", 
+    modality: "Virtual", 
+    instructor: "Andreina Ustate" 
+  },
+];
+---
+
+<MainLayout title="Dashboard">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h3 class="text-gray-500">Eventos Programados</h3>
+      <p class="text-3xl font-bold text-primary">24</p>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h3 class="text-gray-500">Instructores</h3>
+      <p class="text-3xl font-bold text-complement">8</p>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h3 class="text-gray-500">Próximo Evento</h3>
+      <p class="text-xl font-bold text-secondary">Taller de Finanzas - 15 Nov</p>
+    </div>
+  </div>
+
+  <div class="bg-white p-6 rounded-lg shadow">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-xl font-semibold text-secondary">Próximos Eventos</h2>
+      <a href="/eventos/nuevo" class="bg-primary text-white px-4 py-2 rounded hover:bg-red-700 transition-colors">
+        Nuevo Evento
+      </a>
+    </div>
+    
+    <div class="space-y-4">
+      {events.map(event => (
+        <EventCard event={event} />
+      ))}
+    </div>
+  </div>
+</MainLayout>

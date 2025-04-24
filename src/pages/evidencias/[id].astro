@@ -1,0 +1,163 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+
+const eventoId = Astro.params.id;
+const evento = {
+  id: 1,
+  title: "Taller de Emprendimiento",
+  date: "2023-11-15",
+  time: "09:00 - 12:00",
+  instructor: "Julie Sáenz",
+  modality: "presencial",
+  estado_evidencias: "completo",
+  evidencias: {
+    foto_geolocalizacion: "/ejemplo-geo.jpg",
+    fotos_evento: ["/evento1.jpg", "/evento2.jpg"],
+    hora_inicio: "09:05",
+    hora_fin: "11:55",
+    lista_asistencia: "/asistencia.pdf",
+    novedades: "Algunos participantes llegaron tarde",
+    captura_pantalla: null,
+    participantes_virtuales: null
+  }
+};
+---
+
+<MainLayout title={`Evidencias - ${evento.title}`}>
+  <div class="bg-white p-6 rounded-lg shadow">
+    <div class="mb-6">
+      <a 
+        href="/evidencias" 
+        class="inline-flex items-center text-primary hover:text-red-700"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+        </svg>
+        Volver a evidencias
+      </a>
+    </div>
+
+    <h2 class="text-xl font-bold text-secondary mb-2">{evento.title}</h2>
+    <div class="text-gray-600 mb-6">
+      <p><span class="font-medium">Fecha:</span> {new Date(evento.date).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p>
+      <p><span class="font-medium">Horario:</span> {evento.time}</p>
+      <p><span class="font-medium">Modalidad:</span> {evento.modality === 'presencial' ? 'Presencial' : evento.modality === 'virtual' ? 'Virtual' : 'Híbrida'}</p>
+      <p><span class="font-medium">Instructor:</span> {evento.instructor}</p>
+    </div>
+
+    <div class="border-t border-gray-200 pt-6">
+      <h3 class="text-lg font-semibold text-secondary mb-4">Evidencias registradas</h3>
+      
+      {evento.modality !== 'virtual' && (
+        <div class="mb-6">
+          <h4 class="font-medium text-gray-700 mb-2">Evidencias presenciales</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="border rounded-lg p-3">
+              <p class="font-medium text-sm text-gray-700 mb-1">Foto con geolocalización</p>
+              {evento.evidencias.foto_geolocalizacion ? (
+                <img src={evento.evidencias.foto_geolocalizacion} alt="Geolocalización" class="w-full h-40 object-cover rounded" />
+              ) : (
+                <div class="bg-gray-100 h-40 rounded flex items-center justify-center text-gray-400">
+                  No disponible
+                </div>
+              )}
+            </div>
+            
+            <div class="border rounded-lg p-3">
+              <p class="font-medium text-sm text-gray-700 mb-1">Fotos del evento</p>
+              <div class="grid grid-cols-2 gap-2">
+                {evento.evidencias.fotos_evento && evento.evidencias.fotos_evento.length > 0 ? (
+                  evento.evidencias.fotos_evento.map(foto => (
+                    <img src={foto} alt="Evento" class="w-full h-20 object-cover rounded" />
+                  ))
+                ) : (
+                  <div class="col-span-2 bg-gray-100 h-20 rounded flex items-center justify-center text-gray-400">
+                    No disponible
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            <div class="border rounded-lg p-3">
+              <p class="font-medium text-sm text-gray-700 mb-1">Hora de inicio/fin</p>
+              <div class="flex space-x-4">
+                <div>
+                  <p class="text-xs text-gray-500">Inicio</p>
+                  <p class="font-medium">{evento.evidencias.hora_inicio || '--:--'}</p>
+                </div>
+                <div>
+                  <p class="text-xs text-gray-500">Fin</p>
+                  <p class="font-medium">{evento.evidencias.hora_fin || '--:--'}</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="border rounded-lg p-3">
+              <p class="font-medium text-sm text-gray-700 mb-1">Lista de asistencia</p>
+              {evento.evidencias.lista_asistencia ? (
+                <div class="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
+                  <span>Documento subido</span>
+                </div>
+              ) : (
+                <div class="text-gray-400">No disponible</div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {evento.modality !== 'presencial' && (
+        <div class="mb-6">
+          <h4 class="font-medium text-gray-700 mb-2">Evidencias virtuales</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="border rounded-lg p-3">
+              <p class="font-medium text-sm text-gray-700 mb-1">Captura de pantalla</p>
+              {evento.evidencias.captura_pantalla ? (
+                <img src={evento.evidencias.captura_pantalla} alt="Captura" class="w-full h-40 object-cover rounded" />
+              ) : (
+                <div class="bg-gray-100 h-40 rounded flex items-center justify-center text-gray-400">
+                  No disponible
+                </div>
+              )}
+            </div>
+            
+            <div class="border rounded-lg p-3">
+              <p class="font-medium text-sm text-gray-700 mb-1">Participantes virtuales</p>
+              {evento.evidencias.participantes_virtuales ? (
+                <div class="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
+                  <span>Lista de participantes</span>
+                </div>
+              ) : (
+                <div class="text-gray-400">No disponible</div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div class="border rounded-lg p-3">
+        <p class="font-medium text-sm text-gray-700 mb-1">Novedades reportadas</p>
+        {evento.evidencias.novedades ? (
+          <p class="text-gray-700">{evento.evidencias.novedades}</p>
+        ) : (
+          <p class="text-gray-400">No se reportaron novedades</p>
+        )}
+      </div>
+    </div>
+
+    <div class="mt-6 flex justify-end">
+      <a 
+        href={`/evidencias/subir/${evento.id}`} 
+        class="px-4 py-2 bg-primary text-white rounded hover:bg-red-700 transition-colors"
+      >
+        Editar evidencias
+      </a>
+    </div>
+  </div>
+</MainLayout>

@@ -1,0 +1,62 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import EvidenciaCard from '../../components/EvidenciaCard.astro';
+
+const eventos = [
+  {
+    id: 1,
+    title: "Taller de Emprendimiento",
+    date: "2023-11-15",
+    time: "09:00 - 12:00",
+    instructor: "Julie Sáenz",
+    modality: "presencial",
+    estado_evidencias: "completo"
+  },
+  {
+    id: 2,
+    title: "Marketing Digital",
+    date: "2023-11-20",
+    time: "14:30 - 17:30",
+    instructor: "Andreina Ustate",
+    modality: "virtual",
+    estado_evidencias: "parcial"
+  },
+  {
+    id: 3,
+    title: "Finanzas Corporativas",
+    date: "2023-11-25",
+    time: "10:00 - 13:00",
+    instructor: "Tatiana Prieto",
+    modality: "hibrida",
+    estado_evidencias: "pendiente"
+  }
+];
+---
+
+<MainLayout title="Gestión de Evidencias">
+  <div class="bg-white p-6 rounded-lg shadow">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-bold text-secondary">Evidencias de Eventos</h2>
+      <div class="flex space-x-2">
+        <select class="border border-gray-300 rounded px-3 py-1 text-sm">
+          <option>Todos los estados</option>
+          <option>Completos</option>
+          <option>Parciales</option>
+          <option>Pendientes</option>
+        </select>
+        <select class="border border-gray-300 rounded px-3 py-1 text-sm">
+          <option>Todas las modalidades</option>
+          <option>Presencial</option>
+          <option>Virtual</option>
+          <option>Híbrida</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="space-y-4">
+      {eventos.map(evento => (
+        <EvidenciaCard evento={evento} />
+      ))}
+    </div>
+  </div>
+</MainLayout>

@@ -1,0 +1,26 @@
+---
+const user = {
+  name: "Gestora Administrativa",
+  avatar: "/avatar.png"
+};
+---
+
+<header class="bg-white shadow-sm">
+  <div class="flex items-center justify-between px-6 py-4">
+    <div class="flex items-center space-x-4">
+      <h2 class="text-xl font-semibold text-secondary">Panel de Gestión</h2>
+    </div>
+    
+    <div class="flex items-center space-x-4">
+      <div class="text-right">
+        <p class="font-medium text-gray-900">{user.name}</p>
+        <p class="text-sm text-gray-500">Administrador</p>
+      </div>
+      <img 
+        src={user.avatar} 
+        alt="Avatar" 
+        class="w-10 h-10 rounded-full bg-gray-200"
+      />
+    </div>
+  </div>
+</header>
