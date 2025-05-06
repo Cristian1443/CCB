@@ -1,112 +1,664 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
-import Modal from '../../components/Modal.astro';
+// Importa Modal si lo usas en alguna parte del layout o componente
+// import Modal from '../../components/Modal.astro';
 
-const instructors = [
-  { id: 1, name: "Andreina Ustate" },
-  { id: 2, name: "Julie Sáenz Castañeda" },
-  { id: 3, name: "Tatiana Prieto" },
+// Datos de ejemplo para selects que NO dependen de la lógica compleja
+const tiposActividad = [
+  "TALLERES",
+  "ASESORÍAS GRUPALES",
+  "CÁPSULAS",
+  "Asesoria individual"
 ];
+
+const modalidades = ["Presencial", "Virtual", "Híbrida"];
+
+const regiones = ["SI", "NO"];
+
+const estados = ["Programada", "Realizada", "Cancelada"];
+
+const tiposVinculacion = [
+  "Contrato de prestación de servicios",
+  "Contrato laboral",
+  "Consultor independiente"
+];
+
+// Estos pueden ser fijos o cargarse de otra API si son muchos
+const coordinadoresCCB = [
+  "Coordinador 1",
+  "Coordinador 2",
+  "Coordinador 3"
+];
+
+const dependencias = [
+  "Dependencia 1",
+  "Dependencia 2",
+  "Dependencia 3"
+];
+
+// Datos para el selector de N° Ruta (del 1 al 10) - Fijo en el frontmatter
+const numRutas = Array.from({length: 10}, (_, i) => i + 1);
+
 ---
 
-<MainLayout title="Nuevo Evento">
-  <div class="bg-white p-6 rounded-lg shadow">
-    <!-- Botón para volver al dashboard -->
-    <div class="mb-6">
-      <a 
-        href="/" 
-        class="inline-flex items-center text-primary hover:text-red-700"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-        </svg>
-        Volver al Dashboard
-      </a>
-    </div>
+<MainLayout title="Nueva Programación">
+  <div class="bg-white p-6 rounded-lg shadow">
+        <div class="mb-6">
+      <a href="/" class="inline-flex items-center text-primary hover:text-red-700">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+        </svg>
+        Volver al Dashboard
+      </a>
+    </div>
 
-    <form class="space-y-6">
-      <div>
-        <label for="title" class="block text-sm font-medium text-gray-700">Nombre del Evento</label>
-        <input 
-          type="text" 
-          id="title" 
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
-        />
-      </div>
-      
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div>
-          <label for="date" class="block text-sm font-medium text-gray-700">Fecha</label>
-          <input 
-            type="date" 
-            id="date" 
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
-          />
-        </div>
-        
-        <!-- Nuevo campo para la hora -->
-        <div>
-          <label for="time" class="block text-sm font-medium text-gray-700">Hora</label>
-          <input 
-            type="time" 
-            id="time" 
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
-          />
-        </div>
-        
-        <div>
-          <label for="location" class="block text-sm font-medium text-gray-700">Lugar</label>
-          <input 
-            type="text" 
-            id="location" 
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
-          />
-        </div>
-      </div>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label for="modality" class="block text-sm font-medium text-gray-700">Modalidad</label>
-          <select 
-            id="modality" 
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
-          >
-            <option value="presencial">Presencial</option>
-            <option value="virtual">Virtual</option>
-            <option value="hibrida">Híbrida</option>
-          </select>
-        </div>
-        
-        <div>
-          <label for="instructor" class="block text-sm font-medium text-gray-700">Instructor</label>
-          <select 
-            id="instructor" 
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
-          >
-            {instructors.map(instructor => (
-              <option value={instructor.id}>{instructor.name}</option>
-            ))}
-          </select>
-        </div>
-      </div>
-      
-      <div>
-        <label for="description" class="block text-sm font-medium text-gray-700">Descripción</label>
-        <textarea 
-          id="description" 
-          rows="4"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
-        ></textarea>
-      </div>
-      
-      <div class="flex justify-end space-x-4">
-        <a href="/eventos" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
-          Cancelar
-        </a>
-        <button type="submit" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-red-700">
-          Guardar Evento
-        </button>
-      </div>
-    </form>
-  </div>
+        <div class="mb-8 p-4 border border-dashed border-gray-300 rounded-lg">
+      <h3 class="text-lg font-medium text-secondary mb-2">Importar desde Excel</h3>
+      <p class="text-sm text-gray-500 mb-4">Sube un archivo Excel con la programación para cargar automáticamente los datos</p>
+
+      <div class="flex items-center">
+        <input
+          type="file"
+          id="excel-upload"
+          accept=".xlsx, .xls, .csv"
+          class="hidden"
+          name="excel_file" {/* Añadimos un name para el formulario si quieres enviarlo */}
+        />
+        <label
+          for="excel-upload"
+          class="px-4 py-2 bg-complement text-white rounded-md hover:bg-blue-700 cursor-pointer mr-4"
+        >
+          Seleccionar archivo
+        </label>
+        <span class="text-sm text-gray-500" id="file-name">Ningún archivo seleccionado</span>
+      </div>
+    </div>
+
+        <form id="programacionForm" class="space-y-6"> {/* Agregamos un ID al formulario */}
+      <h2 class="text-xl font-semibold text-secondary border-b pb-2">Información General</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Selector para N° Ruta */}
+        <div>
+          <label for="num-ruta" class="block text-sm font-medium text-gray-700">N° Ruta</label>
+          <select id="num-ruta" class="input-field" name="numero_ruta"> {/* Añadimos el name */}
+            <option value="">Seleccione una ruta</option>
+            {numRutas.map(num => (
+              <option value={num}>{num}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Nuevo selector para Programa */}
+        <div>
+          <label for="programa" class="block text-sm font-medium text-gray-700">Programa</label>
+          <select id="programa" class="input-field" name="programa" disabled> {/* Añadimos el name, Inicialmente deshabilitado */}
+            <option value="">Seleccione un programa</option>
+          </select>
+        </div>
+
+        {/* Nuevo selector para Nombre de Ruta */}
+        <div>
+          <label for="nombre-ruta" class="block text-sm font-medium text-gray-700">Nombre de Ruta</label>
+          <select id="nombre-ruta" class="input-field" name="nombre_ruta" disabled> {/* Añadimos el name, Inicialmente deshabilitado */}
+            <option value="">Seleccione un nombre de ruta</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Selector para Sector */}
+        <div>
+          <label for="sector" class="block text-sm font-medium text-gray-700">Sector</label>
+          <select id="sector" class="input-field" name="sector" disabled> {/* Añadimos el name, Inicialmente deshabilitado */}
+            <option value="">Seleccione un sector</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="coordinador" class="block text-sm font-medium text-gray-700">Coordinador CCB</label>
+          <select id="coordinador" class="input-field" name="coordinador_ccb"> {/* Añadimos el name */}
+            {coordinadoresCCB.map(coordinador => (
+              <option value={coordinador}>{coordinador}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label for="numero-contrato" class="block text-sm font-medium text-gray-700">Número de Contrato</label>
+          <input type="text" id="numero-contrato" class="input-field" name="numero_contrato"> {/* Añadimos el name */}
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="codigo-agenda" class="block text-sm font-medium text-gray-700">Código Agenda</label>
+          <input type="text" id="codigo-agenda" class="input-field" name="codigo_agenda"> {/* Añadimos el name */}
+        </div>
+
+        <div>
+          <label for="tematica" class="block text-sm font-medium text-gray-700">Temática</label>
+          <input type="text" id="tematica" class="input-field" name="tematica"> {/* Añadimos el name */}
+        </div>
+      </div>
+
+
+      <h2 class="text-xl font-semibold text-secondary border-b pb-2 mt-8">Detalles de la Formación</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div>
+          <label for="mes" class="block text-sm font-medium text-gray-700">Mes</label>
+          <input type="text" id="mes" class="input-field" name="mes"> {/* Añadimos el name */}
+        </div>
+
+        <div>
+          <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha de la Formación</label>
+          <input type="date" id="fecha" class="input-field" name="fecha_formacion"> {/* Añadimos el name */}
+        </div>
+
+        <div>
+          <label for="dia" class="block text-sm font-medium text-gray-700">Día</label>
+          <input type="text" id="dia" class="input-field" name="dia"> {/* Añadimos el name */}
+        </div>
+
+        <div>
+          <label for="tipo-actividad" class="block text-sm font-medium text-gray-700">Tipo de Actividad</label>
+          <select id="tipo-actividad" class="input-field" name="tipo_actividad"> {/* Añadimos el name */}
+            {tiposActividad.map(tipo => (
+              <option value={tipo}>{tipo}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div>
+          <label for="hora-inicio" class="block text-sm font-medium text-gray-700">Hora Inicio</label>
+          <input type="time" id="hora-inicio" class="input-field" name="hora_inicio"> {/* Añadimos el name */}
+        </div>
+
+        <div>
+          <label for="hora-fin" class="block text-sm font-medium text-gray-700">Hora Fin</label>
+          <input type="time" id="hora-fin" class="input-field" name="hora_fin"> {/* Añadimos el name */}
+        </div>
+
+        <div>
+          <label for="horas-programadas" class="block text-sm font-medium text-gray-700">Horas Programadas Taller</label>
+          <input type="number" id="horas-programadas" class="input-field" name="horas_programadas_taller"> {/* Añadimos el name */}
+        </div>
+
+        <div>
+          <label for="modalidad" class="block text-sm font-medium text-gray-700">Modalidad</label>
+          <select id="modalidad" class="input-field" name="modalidad"> {/* Añadimos el name */}
+            {modalidades.map(mod => (
+              <option value={mod}>{mod}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="lugar" class="block text-sm font-medium text-gray-700">Lugar</label>
+          <input type="text" id="lugar" class="input-field" name="lugar"> {/* Añadimos el name */}
+        </div>
+
+        <div>
+          <label for="region" class="block text-sm font-medium text-gray-700">Región</label>
+          <select id="region" class="input-field" name="region"> {/* Añadimos el name */}
+            {regiones.map(region => (
+              <option value={region}>{region}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label for="enlace-virtual" class="block text-sm font-medium text-gray-700">Enlace Virtual (si aplica)</label>
+        <input type="url" id="enlace-virtual" class="input-field" name="enlace_virtual"> {/* Añadimos el name */}
+      </div>
+
+      <h2 class="text-xl font-semibold text-secondary border-b pb-2 mt-8">Estado y Asistentes</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <label for="envio-programacion" class="block text-sm font-medium text-gray-700">Envío Programación</label>
+          <select id="envio-programacion" class="input-field" name="envio_programacion"> {/* Añadimos el name */}
+            <option value="SI">SI</option>
+            <option value="NO">NO</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="estado" class="block text-sm font-medium text-gray-700">Estado de la Actividad</label>
+          <select id="estado" class="input-field" name="estado_actividad"> {/* Añadimos el name */}
+            {estados.map(estado => (
+              <option value={estado}>{estado}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label for="asistentes" class="block text-sm font-medium text-gray-700">N° de Asistentes</label>
+          <input type="number" id="asistentes" class="input-field" name="numero_asistentes"> {/* Añadimos el name */}
+        </div>
+      </div>
+
+      <div>
+        <label for="evidencia" class="block text-sm font-medium text-gray-700">Cargue Evidencia</label>
+        <select id="evidencia" class="input-field" name="cargue_evidencia"> {/* Añadimos el name */}
+          <option value="SI">SI</option>
+          <option value="NO">NO</option>
+        </select>
+      </div>
+
+      <h2 class="text-xl font-semibold text-secondary border-b pb-2 mt-8">Información del Consultor</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <label for="nombre-consultor" class="block text-sm font-medium text-gray-700">Nombre del Consultor</label>
+          <input type="text" id="nombre-consultor" class="input-field" name="nombre_consultor"> {/* Añadimos el name */}
+        </div>
+
+        <div>
+          <label for="cedula" class="block text-sm font-medium text-gray-700">Cédula</label>
+          <input type="text" id="cedula" class="input-field" name="cedula_consultor"> {/* Añadimos el name */}
+        </div>
+
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700">E-mail Personal/Corporativo</label>
+          <input type="email" id="email" class="input-field" name="email_consultor"> {/* Añadimos el name */}
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <label for="celular" class="block text-sm font-medium text-gray-700">Celular</label>
+          <input type="tel" id="celular" class="input-field" name="celular_consultor"> {/* Añadimos el name */}
+        </div>
+
+        <div>
+          <label for="direccion" class="block text-sm font-medium text-gray-700">Dirección</label>
+          <input type="text" id="direccion" class="input-field" name="direccion_consultor"> {/* Añadimos el name */}
+        </div>
+
+        <div>
+          <label for="vinculacion" class="block text-sm font-medium text-gray-700">Tipo de Vinculación</label>
+          <select id="vinculacion" class="input-field" name="tipo_vinculacion"> {/* Añadimos el name */}
+            {tiposVinculacion.map(tipo => (
+              <option value={tipo}>{tipo}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <h2 class="text-xl font-semibold text-secondary border-b pb-2 mt-8">Aspectos Económicos</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <label for="horas-pagar" class="block text-sm font-medium text-gray-700">N° de Horas a Pagar al Docente</label>
+          <input type="number" id="horas-pagar" class="input-field" name="horas_a_pagar_docente"> {/* Añadimos el name */}
+        </div>
+
+        <div>
+          <label for="horas-cobrar" class="block text-sm font-medium text-gray-700">N° de Horas a Cobrar a CCB</label>
+          <input type="number" id="horas-cobrar" class="input-field" name="horas_a_cobrar_ccb"> {/* Añadimos el name */}
+        </div>
+
+        <div>
+          <label for="clasificacion-hora" class="block text-sm font-medium text-gray-700">Clasificación Valor Hora</label>
+          <input type="text" id="clasificacion-hora" class="input-field" name="clasificacion_valor_hora"> {/* Añadimos el name */}
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div>
+          <label for="valor-hora" class="block text-sm font-medium text-gray-700">Valor Hora</label>
+          <input type="number" id="valor-hora" class="input-field" name="valor_hora"> {/* Añadimos el name */}
+        </div>
+
+        <div>
+          <label for="gastos-traslado" class="block text-sm font-medium text-gray-700">Gastos de Traslado</label>
+          <input type="number" id="gastos-traslado" class="input-field" name="gastos_traslado"> {/* Añadimos el name */}
+        </div>
+
+        <div>
+          <label for="total-pagar" class="block text-sm font-medium text-gray-700">Valor Total a Pagar al Docente</label>
+          <input type="number" id="total-pagar" class="input-field" name="valor_total_pagar_docente"> {/* Añadimos el name */}
+        </div>
+
+        <div>
+          <label for="hora-cobrar-ccb" class="block text-sm font-medium text-gray-700">Valor Hora a Cobrar a CCB</label>
+          <input type="number" id="hora-cobrar-ccb" class="input-field" name="valor_hora_cobrar_ccb"> {/* Añadimos el name */}
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <label for="total-cobrar-ccb" class="block text-sm font-medium text-gray-700">Valor Total a Cobrar a CCB</label>
+          <input type="number" id="total-cobrar-ccb" class="input-field" name="valor_total_cobrar_ccb"> {/* Añadimos el name */}
+        </div>
+
+        <div>
+          <label for="oamp" class="block text-sm font-medium text-gray-700">Número de OAMP Consultor</label>
+          <input type="text" id="oamp" class="input-field" name="numero_oamp_consultor"> {/* Añadimos el name */}
+        </div>
+
+        <div>
+          <label for="fecha-oamp" class="block text-sm font-medium text-gray-700">Fecha Inicio de OAMP Consultor</label>
+          <input type="date" id="fecha-oamp" class="input-field" name="fecha_inicio_oamp_consultor"> {/* Añadimos el name */}
+        </div>
+      </div>
+
+      <h2 class="text-xl font-semibold text-secondary border-b pb-2 mt-8">Información Adicional</h2>
+
+      <div>
+        <label for="entregables" class="block text-sm font-medium text-gray-700">Entregables</label>
+        <textarea id="entregables" rows="3" class="input-field" name="entregables"></textarea> {/* Añadimos el name */}
+        </div>
+
+      <div>
+        <label for="dependencia" class="block text-sm font-medium text-gray-700">Dependencia</label>
+        <select id="dependencia" class="input-field" name="dependencia"> {/* Añadimos el name */}
+          {dependencias.map(dep => (
+            <option value={dep}>{dep}</option>
+            ))}
+        </select>
+      </div>
+
+      <div>
+        <label for="observaciones" class="block text-sm font-medium text-gray-700">Observaciones</label>
+        <textarea id="observaciones" rows="3" class="input-field" name="observaciones"></textarea> {/* Añadimos el name */}
+      </div>
+
+      <div class="flex justify-end space-x-4 pt-6 border-t">
+        <button type="button" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+          Cancelar
+        </button>
+        <button type="submit" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-red-700">
+          Guardar Programación
+        </button>
+      </div>
+    </form>
+  </div>
+
+  {/* Script para manejar la subida de Excel y la lógica de los selectores */}
+  <script>
+    // --- Lógica para la subida de Excel ---
+    // Usamos '?' para manejo seguro de posibles elementos no encontrados al inicio
+    document.getElementById('excel-upload')?.addEventListener('change', function(e) {
+      // Añadimos una verificación para 'e.target' y 'files'
+      const inputElement = e.target;
+      // Obtenemos el elemento 'file-name' de forma segura
+      const fileNameElement = document.getElementById('file-name');
+
+      if (inputElement && inputElement instanceof HTMLInputElement && inputElement.files && inputElement.files.length > 0) {
+        const fileName = inputElement.files[0].name;
+        // Verificamos si el elemento existe antes de actualizar su textContent
+        if (fileNameElement) {
+          fileNameElement.textContent = fileName;
+        }
+
+        // Aquí iría la lógica para procesar el Excel en el backend
+        // alert('Archivo seleccionado. La funcionalidad de importación se implementará en el backend.');
+        // Podrías enviar el archivo al backend usando fetch
+        // const formData = new FormData();
+        // formData.append('file', inputElement.files[0]);
+        // fetch('http://localhost:5000/api/upload-excel', { method: 'POST', body: formData }); // Asegúrate de la URL correcta
+      } else {
+        // Verificamos si el elemento existe antes de actualizar su textContent
+        if (fileNameElement) {
+           fileNameElement.textContent = 'Ningún archivo seleccionado';
+         }
+      }
+    });
+
+    // --- Lógica para los selectores dependientes ---
+    // Usamos '?' para manejo seguro de posibles elementos no encontrados
+    const numRutaSelect = document.getElementById('num-ruta');
+    const programaSelect = document.getElementById('programa');
+    const nombreRutaSelect = document.getElementById('nombre-ruta');
+    const sectorSelect = document.getElementById('sector');
+    const form = document.getElementById('programacionForm'); // Obtener el formulario
+
+
+    // Verificamos que los elementos críticos existen antes de agregar listeners o manipularlos
+    if (!numRutaSelect || !programaSelect || !nombreRutaSelect || !sectorSelect || !form) {
+      console.error("No se encontraron todos los elementos críticos del formulario. La interactividad de los selectores dependientes no funcionará.");
+      // Aquí podrías deshabilitar el formulario completo o mostrar un mensaje al usuario
+      // form?.querySelectorAll('input, select, textarea, button').forEach(el => el.disabled = true);
+    } else {
+
+		    // Función para limpiar y deshabilitar selectores
+		    /**
+		    * @param {HTMLSelectElement} selectElement - El elemento select a resetear.
+		    * @param {string} [placeholder='Seleccione...'] - El texto del placeholder.
+		    */
+		    function resetSelect(selectElement, placeholder = 'Seleccione...') {
+		      selectElement.innerHTML = `<option value="">${placeholder}</option>`;
+		      selectElement.disabled = true;
+		      selectElement.value = ""; // Asegurarse de que no haya opción seleccionada
+		    }
+
+		    // Función para llenar un selector con opciones
+		    /**
+		    * @param {HTMLSelectElement} selectElement - El elemento select a llenar.
+		    * @param {string[]} options - Array de strings con las opciones.
+		    */
+		    function populateSelect(selectElement, options) {
+		      // Mantener el placeholder existente o crear uno si no hay
+				const currentPlaceholder = selectElement.querySelector('option[value=""]')?.textContent || 'Seleccione...';
+		      resetSelect(selectElement, currentPlaceholder);
+
+				if (options && options.length > 0) {
+					options.forEach(option => {
+						const optionElement = document.createElement('option');
+						optionElement.value = option;
+						optionElement.textContent = option;
+						selectElement.appendChild(optionElement);
+					});
+					selectElement.disabled = false;
+				} else {
+                     // Si no hay opciones, mantenerlo deshabilitado y con un mensaje adecuado
+                     resetSelect(selectElement, 'No hay opciones disponibles');
+                }
+		    }
+
+		    // Event Listener para N° Ruta
+		    numRutaSelect.addEventListener('change', async () => {
+		      const selectedNumRuta = numRutaSelect.value;
+
+		      // Resetear selectores dependientes
+		      resetSelect(programaSelect, 'Cargando...'); // Mensaje de carga
+		      resetSelect(nombreRutaSelect, 'Seleccione un nombre de ruta');
+		      resetSelect(sectorSelect, 'Seleccione un sector');
+
+		      if (selectedNumRuta) {
+		        // Obtener programas basados en N° Ruta desde el backend
+		        try {
+		          // Asegúrate de que la URL y el puerto de tu backend Flask sean correctos
+		          const response = await fetch(`http://localhost:5000/api/get_programas_by_num_ruta?num_ruta=${encodeURIComponent(selectedNumRuta)}`);
+		          if (response.ok) {
+		            const data = await response.json();
+		            const programas = data.programas || []; // Asegurarse de que es un array
+		            populateSelect(programaSelect, programas);
+
+		            // Si solo hay un programa, seleccionarlo automáticamente y disparar el siguiente evento
+		            if (programas.length === 1) {
+		              programaSelect.value = programas[0];
+		              // Disparar evento change manualmente para cargar los siguientes selectores
+		              programaSelect.dispatchEvent(new Event('change'));
+		              programaSelect.disabled = true; // Bloquear el selector de programa después de seleccionar
+		            } else {
+		              programaSelect.disabled = false; // Desbloquear si hay múltiples opciones
+		            }
+		          } else {
+		            console.error('Error al obtener programas:', response.statusText);
+		            resetSelect(programaSelect, 'Error cargando programas');
+		          }
+		        } catch (error) {
+		          console.error('Error en la petición fetch para programas:', error);
+		          resetSelect(programaSelect, 'Error de conexión');
+		        }
+		      } else {
+                 // Si no se selecciona N° Ruta, resetear y deshabilitar programa
+                 resetSelect(programaSelect, 'Seleccione un programa');
+             }
+		    });
+
+		    // Event Listener para Programa
+		    programaSelect.addEventListener('change', async () => {
+		      const selectedPrograma = programaSelect.value;
+
+		      // Resetear selectores dependientes
+		      resetSelect(nombreRutaSelect, 'Cargando...'); // Mensaje de carga
+		      resetSelect(sectorSelect, 'Seleccione un sector');
+
+		      if (selectedPrograma) {
+		        try {
+		          const response = await fetch(`http://localhost:5000/api/get_nombres_ruta_by_programa?programa=${encodeURIComponent(selectedPrograma)}`);
+		          if (response.ok) {
+		            const data = await response.json();
+		            const nombresRuta = data.nombres_ruta || []; // Asegurarse de que es un array
+		            populateSelect(nombreRutaSelect, nombresRuta);
+
+						// Si solo hay un nombre de ruta, seleccionarlo automáticamente y disparar el siguiente evento
+						if (nombresRuta.length === 1) {
+							nombreRutaSelect.value = nombresRuta[0];
+							// Disparar evento change manualmente para cargar los siguientes selectores
+							nombreRutaSelect.dispatchEvent(new Event('change'));
+							nombreRutaSelect.disabled = true; // Bloquear el selector
+						} else {
+							nombreRutaSelect.disabled = false; // Desbloquear si hay múltiples opciones
+						}
+
+		          } else {
+		            console.error('Error al obtener nombres de ruta:', response.statusText);
+		            resetSelect(nombreRutaSelect, 'Error cargando nombres de ruta');
+		          }
+		        } catch (error) {
+		          console.error('Error en la petición fetch para nombres de ruta:', error);
+		          resetSelect(nombreRutaSelect, 'Error de conexión');
+		        }
+		      } else {
+                 // Si no se selecciona Programa, resetear y deshabilitar nombre de ruta
+                 resetSelect(nombreRutaSelect, 'Seleccione un nombre de ruta');
+             }
+		    });
+
+		    // Event Listener para Nombre de Ruta
+		    nombreRutaSelect.addEventListener('change', async () => {
+		      const selectedNombreRuta = nombreRutaSelect.value;
+
+		      // Resetear selector dependiente
+		      resetSelect(sectorSelect, 'Cargando...'); // Mensaje de carga
+
+		      if (selectedNombreRuta) {
+		        // Obtener sectores basados en Nombre de Ruta desde el backend
+		        try {
+		          const response = await fetch(`http://localhost:5000/api/get_sectores_by_nombre_ruta?nombre_ruta=${encodeURIComponent(selectedNombreRuta)}`);
+		          if (response.ok) {
+		            const data = await response.json();
+		            const sectores = data.sectores || []; // Asegurarse de que es un array
+		            populateSelect(sectorSelect, sectores);
+
+						// Si solo hay un sector, seleccionarlo automáticamente y bloquear
+						if (sectores.length === 1) {
+							sectorSelect.value = sectores[0];
+							sectorSelect.disabled = true; // Bloquear el selector
+						} else {
+							sectorSelect.disabled = false; // Desbloquear si hay múltiples opciones
+						}
+
+		          } else {
+		            console.error('Error al obtener sectores:', response.statusText);
+		            resetSelect(sectorSelect, 'Error cargando sectores');
+		          }
+		        } catch (error) {
+		          console.error('Error en la petición fetch para sectores:', error);
+		          resetSelect(sectorSelect, 'Error de conexión');
+		        }
+		      } else {
+                 // Si no se selecciona Nombre de Ruta, resetear y deshabilitar sector
+                 resetSelect(sectorSelect, 'Seleccione un sector');
+             }
+		    });
+
+		    // Event Listener para el envío del formulario
+		    form.addEventListener('submit', async (event) => {
+		      event.preventDefault(); // Prevenir el envío por defecto del formulario
+
+              // Obtener los datos del formulario usando FormData
+		      const formData = new FormData(form);
+		      const data = {};
+
+              // Convertir FormData a un objeto JSON simple
+              // Los 'name' de los elementos del formulario se convierten en las claves del objeto data
+              formData.forEach((value, key) => {
+                // Opcional: Convertir strings vacíos a null si la base de datos espera NULL
+                data[key] = value === "" ? null : value;
+              });
+
+
+		      console.log('Datos a enviar al backend:', data);
+
+		      // Validar campos esenciales antes de enviar
+		      if (!data.numero_ruta || !data.programa || !data.nombre_ruta || !data.sector) {
+                 alert('Por favor, complete los campos de N° Ruta, Programa, Nombre de Ruta y Sector.');
+                 return; // Detener el envío si faltan campos esenciales
+             }
+
+
+		      try {
+		        // Asegúrate de que la URL coincida con el endpoint de guardado en tu backend
+		        const response = await fetch('http://localhost:5000/api/guardar_programacion', {
+		          method: 'POST',
+		          headers: {
+		            'Content-Type': 'application/json'
+		          },
+		          body: JSON.stringify(data)
+		        });
+
+		        if (response.ok) {
+		          const result = await response.json();
+		          alert('Programación guardada con éxito: ' + result.message + (result.id ? ` (ID: ${result.id})` : ''));
+		          form.reset(); // Limpiar el formulario después de guardar
+		          // Resetear los selectores dependientes a su estado inicial y deshabilitarlos
+		          resetSelect(programaSelect, 'Seleccione un programa');
+		          resetSelect(nombreRutaSelect, 'Seleccione un nombre de ruta');
+		          resetSelect(sectorSelect, 'Seleccione un sector');
+		        } else {
+		          // Intentar leer el error del backend si no es un 200 OK
+		          // Usamos response.text() primero para ver si la respuesta no es JSON (ej: error HTML)
+		          const errorText = await response.text();
+		          try {
+		            const errorData = JSON.parse(errorText);
+		            alert('Error al guardar programación: ' + (errorData.error || `Error desconocido (Código: ${response.status}).`));
+		          } catch (jsonError) {
+		            // Si no se pudo parsear como JSON, mostramos el texto de la respuesta
+		            console.error('Error al guardar programación (respuesta no JSON):', errorText);
+		            alert('Error al guardar programación. Respuesta del servidor: ' + errorText.substring(0, 100) + '...'); // Mostrar solo una parte
+		          }
+		        }
+		      } catch (error) {
+		        console.error('Error en la petición fetch para guardar programación:', error);
+		        alert('Error de conexión con el backend o problema en la petición.');
+		      }
+		    });
+	} // Cierre del else que verifica si los elementos existen
+
+
+    // Lógica para inicializar los selectores si es necesario al cargar la página
+    // No es estrictamente necesario aquí ya que los selectores dependientes están inicialmente deshabilitados
+    // y se habilitarán al seleccionar N° Ruta.
+
+  </script>
+
+  <style>
+    /* Estilos para los campos de entrada */
+    .input-field {
+      @apply mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm;
+      /* Asegúrate de tener TailwindCSS configurado para que @apply funcione */
+    }
+  </style>
 </MainLayout>

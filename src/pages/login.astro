@@ -1,50 +1,176 @@
 ---
-import MainLayout from '../layouts/MainLayout.astro';
+// src/pages/login.astro
+
+// En caso de la integración con Flask, aquí no necesitamos esta lógica
+// ya que se delegará al servidor de Flask
 ---
 
-<MainLayout title="Iniciar Sesión">
-  <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-lg">
-      <div>
-        <img class="mx-auto h-12 w-auto" src="/logo.png" alt="Logo">
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-secondary">
-          Iniciar Sesión
-        </h2>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Eventos - Iniciar Sesión</title>
+  <!-- Aquí puedes incluir tus estilos propios o un CDN de Tailwind -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-red-100 p-4">
+  <div class="w-full max-w-md bg-white rounded-xl shadow-2xl overflow-hidden">
+    <!-- Encabezado con tabs para cada tipo de usuario -->
+    <div class="flex border-b">
+      <button 
+        class="tab-button flex-1 py-4 px-6 text-center font-medium text-gray-500 hover:text-red-600 transition-colors focus:outline-none"
+        data-role="gestora"
+        data-username="gestora"
+        data-password="gestora123"
+      >
+        Gestora
+      </button>
+      <button 
+        class="tab-button flex-1 py-4 px-6 text-center font-medium text-gray-500 hover:text-red-600 transition-colors focus:outline-none"
+        data-role="consultor"
+        data-username="consultor"
+        data-password="consultor123"
+      >
+        Consultor
+      </button>
+      <button 
+        class="tab-button flex-1 py-4 px-6 text-center font-medium text-gray-500 hover:text-red-600 transition-colors focus:outline-none"
+        data-role="reclutador"
+        data-username="reclutador"
+        data-password="reclutador123"
+      >
+        Reclutador
+      </button>
+    </div>
+
+    <div class="p-8">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-blue-700">Sistema de Eventos</h1>
+        <p class="mt-2 text-gray-600">Ingresa con tus credenciales</p>
       </div>
-      <form class="mt-8 space-y-6" action="#" method="POST">
-        <input type="hidden" name="remember" value="true">
-        <div class="rounded-md shadow-sm space-y-4">
-          <div>
-            <label for="email" class="sr-only">Usuario</label>
-            <input id="email" name="email" type="text" required class="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm" placeholder="Usuario">
-          </div>
-          <div>
-            <label for="password" class="sr-only">Contraseña</label>
-            <input id="password" name="password" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm" placeholder="Contraseña">
-          </div>
+
+      <form id="login-form" action="/api/login" method="POST" class="space-y-6">
+        <div>
+          <label for="username" class="block text-sm font-medium text-gray-700">Usuario</label>
+          <input 
+            type="text" 
+            id="username" 
+            name="username" 
+            required
+            class="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500"
+            placeholder="Ingresa tu usuario"
+          />
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            required
+            class="mt-1 block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500"
+            placeholder="Ingresa tu contraseña"
+          />
         </div>
 
         <div class="flex items-center justify-between">
           <div class="flex items-center">
-            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+            <input 
+              id="remember-me" 
+              name="remember-me" 
+              type="checkbox" 
+              class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
+            />
             <label for="remember-me" class="ml-2 block text-sm text-gray-900">
-              Recordarme
+              Recordar sesión
             </label>
           </div>
 
           <div class="text-sm">
-            <a href="#" class="font-medium text-primary hover:text-red-700">
+            <a href="#" class="font-medium text-red-600 hover:text-red-700">
               ¿Olvidaste tu contraseña?
             </a>
           </div>
         </div>
 
         <div>
-          <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+          <button 
+            type="submit" 
+            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
+          >
             Iniciar Sesión
           </button>
         </div>
       </form>
+
+      <div id="login-error" class="mt-4 text-center text-red-600 hidden">
+        Credenciales incorrectas. Inténtalo de nuevo.
+      </div>
     </div>
   </div>
-</MainLayout>
+
+  <!-- Script para manejar los tabs y prefill del formulario -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Activar el tab de gestora por defecto
+      setActiveTab('gestora');
+      
+      // Agregar event listeners a los botones de tabs
+      document.querySelectorAll('.tab-button').forEach(tab => {
+        tab.addEventListener('click', () => {
+          const role = tab.getAttribute('data-role');
+          setActiveTab(role);
+          
+          // Autocompletar credenciales si es modo desarrollo
+          if (window.location.hostname === 'localhost') {
+            document.getElementById('username').value = tab.getAttribute('data-username');
+            document.getElementById('password').value = tab.getAttribute('data-password');
+          }
+        });
+      });
+      
+      // Manejar envío del formulario
+      document.getElementById('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(e.target);
+        
+        try {
+          const response = await fetch('/api/login', {
+            method: 'POST',
+            body: formData
+          });
+          
+          if (response.ok) {
+            const data = await response.json();
+            // Redirigir según el rol
+            window.location.href = data.redirect;
+          } else {
+            document.getElementById('login-error').classList.remove('hidden');
+          }
+        } catch (error) {
+          console.error('Error de inicio de sesión:', error);
+          document.getElementById('login-error').classList.remove('hidden');
+        }
+      });
+    });
+
+    function setActiveTab(tabName) {
+      // Resetear todos los tabs
+      document.querySelectorAll('.tab-button').forEach(tab => {
+        tab.classList.remove('text-red-600', 'border-b-2', 'border-red-600');
+        tab.classList.add('text-gray-500');
+      });
+
+      // Activar el tab seleccionado
+      const activeTab = document.querySelector(`.tab-button[data-role="${tabName}"]`);
+      if (activeTab) {
+        activeTab.classList.add('text-red-600', 'border-b-2', 'border-red-600');
+        activeTab.classList.remove('text-gray-500');
+      }
+    }
+  </script>
+</body>
+</html>
